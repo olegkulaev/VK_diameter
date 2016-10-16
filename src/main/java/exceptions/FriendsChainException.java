@@ -5,13 +5,13 @@ import models.ChainElement;
 import java.util.List;
 
 public abstract class FriendsChainException extends Exception {
-    private List<ChainElement> friendsList;
+    private List<ChainElement> friendsChain;
 
-    protected FriendsChainException(List<ChainElement> friendsList) {
-        this.friendsList = friendsList;
+    FriendsChainException(List<ChainElement> friendsChain) {
+        this.friendsChain = friendsChain;
     }
 
-    public List<ChainElement> getFriendsList() {
-        return friendsList;
+    public List<ChainElement> getFriendsChain() {
+        return friendsChain;
     }
 }

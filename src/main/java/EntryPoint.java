@@ -1,25 +1,34 @@
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import exceptions.LoopedFriendChainException;
-import exceptions.TooLongFriendsChain;
+import exceptions.FriendsChainException;
+import exporters.CSVChainExporter;
 import models.ChainElement;
 import models.UserCredentials;
 import services.Crawler;
+import services.FriendsChainService;
 import services.IdService;
-import services.VkExplorerService;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class EntryPoint {
 
-    public static void main(String[] args) throws ClientException, ApiException, InterruptedException, LoopedFriendChainException, TooLongFriendsChain {
+    public static void main(String[] args) throws ClientException, ApiException, InterruptedException, FriendsChainException, IOException {
         UserCredentials userCredentials = UserCredentials.getDefault();
         IdService idService = new IdService();
         Crawler crawler = new Crawler(userCredentials.getLogin(), userCredentials.getPassword());
-        VkExplorerService explorerService = new VkExplorerService(idService, crawler);
+        FriendsChainService friendsChainService = new FriendsChainService(idService, crawler);
+        CSVChainExporter csvChainExporter = new CSVChainExporter();
 
-        String from = "id1";
-        List<ChainElement> friendsChain = explorerService.getFriendsChain(from);
-        friendsChain.forEach(System.out::println);
+        int chainsCount = 2;
+        boolean ignoreExceptions = true;
+
+        List<List<ChainElement>> chains = friendsChainService
+                .getRandomFriendsChains(chainsCount, ignoreExceptions)
+                .stream()
+                .filter(chainElements -> chainElements != null)
+                .collect(Collectors.toList());
+        csvChainExporter.export("output1.csv", chains);
     }
 }

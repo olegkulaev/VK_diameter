@@ -6,7 +6,7 @@ import models.UserCredentials;
 import org.openqa.selenium.NoSuchElementException;
 import services.Crawler;
 import services.IdService;
-import services.VkExplorerService;
+import services.FriendsChainService;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class VkAnalyzer {
         UserCredentials userCredentials = UserCredentials.getDefault();
         IdService idService = new IdService();
         Crawler crawler = new Crawler(userCredentials.getLogin(), userCredentials.getPassword());
-        VkExplorerService explorerService = new VkExplorerService(idService, crawler);
+        FriendsChainService explorerService = new FriendsChainService(idService, crawler);
 
         HashMap<Integer,List<Integer>> sumFriendsCounts = new HashMap<>();
         HashMap<Integer,Integer> chainsLengthCountMap = new HashMap<>();//count of chains with different lengths
@@ -43,7 +43,7 @@ public class VkAnalyzer {
             try {
                 friendsCounts = explorerService.getFriendsChain(id);
             } catch (FriendsChainException friendsChain) {
-                friendsCounts = friendsChain.getFriendsList();
+                friendsCounts = friendsChain.getFriendsChain();
             } catch (NoSuchElementException exception) {
                 continue;
             }
