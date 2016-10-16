@@ -1,19 +1,13 @@
 package models;
 
 public class UserCredentials {
-    public UserCredentials(Integer id, String login, String password) {
-        this.id = id;
+    public UserCredentials(String login, String password) {
         this.login = login;
         this.password = password;
     }
 
-    private Integer id;
     private String login;
     private String password;
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getLogin() {
         return login;
@@ -24,6 +18,6 @@ public class UserCredentials {
     }
 
     public static UserCredentials getDefault(){
-        return new UserCredentials(0, "2", "4");
+        return new UserCredentials("2", "4");
     }
 }

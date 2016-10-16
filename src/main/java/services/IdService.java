@@ -1,5 +1,8 @@
 package services;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,5 +27,15 @@ public class IdService {
         return matcher.find()
                 ? matcher.group(1)
                 : null;
+    }
+
+    public List<String> generateIds(int count) {
+        Random r = new Random();
+        LinkedList<String> ids = new LinkedList<>();
+        for (int i = 0; i < count; i++) {
+            Integer next = r.nextInt(20000000);
+            ids.add("id" + next);
+        }
+        return ids;
     }
 }

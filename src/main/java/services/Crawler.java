@@ -32,6 +32,9 @@ public class Crawler {
             commonFriendUrl = commonFriendUrl.substring(1);
         }
 
+        String friendsCountString = webDriver.findElement(By.cssSelector("#profile_friends > a > h3 > span:nth-child(2)")).getText();
+        Integer friendsCount = Integer.parseInt(friendsCountString.replace(" ",""));
+
         WebElement friendsPageLink = webDriver.findElement(By.cssSelector("[href^=\"/friends?id=\"]"));
         String friendsPageUrl = friendsPageLink.getAttribute("href");
 
@@ -43,7 +46,7 @@ public class Crawler {
                 .toArray(new WebElement[1])[0]
                 .getAttribute("href");
 
-        return new CrawledUserInfo(firstFriendUrl, friendsPageUrl, hasCommonFriends, commonFriendUrl);
+        return new CrawledUserInfo(firstFriendUrl, friendsPageUrl, hasCommonFriends, commonFriendUrl, friendsCount);
     }
 
 }

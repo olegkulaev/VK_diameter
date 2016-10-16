@@ -1,15 +1,17 @@
 package exceptions;
 
+import models.ChainElement;
+
 import java.util.List;
 
 public abstract class FriendsChainException extends Exception {
-    private List<String> friendsList;
+    private List<ChainElement> friendsList;
 
-    protected FriendsChainException(List<String> friendsList) {
+    protected FriendsChainException(List<ChainElement> friendsList) {
         this.friendsList = friendsList;
     }
 
-    public List<String> getFriendsList() {
+    public List<ChainElement> getFriendsList() {
         return friendsList;
     }
 }

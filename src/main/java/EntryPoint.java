@@ -2,6 +2,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import exceptions.LoopedFriendChainException;
 import exceptions.TooLongFriendsChain;
+import models.ChainElement;
 import models.UserCredentials;
 import services.Crawler;
 import services.IdService;
@@ -17,12 +18,8 @@ public class EntryPoint {
         Crawler crawler = new Crawler(userCredentials.getLogin(), userCredentials.getPassword());
         VkExplorerService explorerService = new VkExplorerService(idService, crawler);
 
-        String from = "id12941656";
-        Integer to = userCredentials.getId();
-        List<String> friendsChain = explorerService.getFriendsChain(from);
-        for (String friendUrl :
-                friendsChain) {
-            System.out.println(friendUrl);
-        }
+        String from = "id1";
+        List<ChainElement> friendsChain = explorerService.getFriendsChain(from);
+        friendsChain.forEach(System.out::println);
     }
 }

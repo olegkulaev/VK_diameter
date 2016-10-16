@@ -1,5 +1,7 @@
 package exceptions;
 
+import models.ChainElement;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,7 @@ import java.util.List;
  */
 public class TooLongFriendsChain extends FriendsChainException {
 
-    public TooLongFriendsChain(List<String> friendsList) {
+    public TooLongFriendsChain(List<ChainElement> friendsList) {
         super(friendsList);
     }
 }

@@ -4,6 +4,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import exceptions.LoopedFriendChainException;
 import exceptions.TooLongFriendsChain;
+import models.ChainElement;
 import models.CrawledUserInfo;
 
 import java.util.ArrayList;
@@ -19,8 +20,8 @@ public class VkExplorerService {
         this.crawler = crawler;
     }
 
-    public List<String> getFriendsChain(String from) throws InterruptedException, ClientException, ApiException, LoopedFriendChainException, TooLongFriendsChain {
-        ArrayList<String> friendsChain = new ArrayList<>();
+    public List<ChainElement> getFriendsChain(String from) throws InterruptedException, ClientException, ApiException, LoopedFriendChainException, TooLongFriendsChain {
+        ArrayList<ChainElement> friendsChain = new ArrayList<>();
         String currentUser = from;
         while (true) {
             if (friendsChain.size() > maxChainSize) {
@@ -29,14 +30,16 @@ public class VkExplorerService {
 
             CrawledUserInfo userInfo = crawler.getUserInfo(currentUser);
             Integer userId = idService.extractIdFromFriendsUrl(userInfo.getFriendsPageUrl());
-            String literalUserId = "id" + userId;
-            if (friendsChain.contains(literalUserId)) {
+            ChainElement chainElement = new ChainElement("id" + userId, userInfo.getFriendsCount());
+
+            if (friendsChain.contains(chainElement)) {
                 throw new LoopedFriendChainException(friendsChain);
             }
 
-            friendsChain.add(literalUserId);
+            friendsChain.add(chainElement);
             if (userInfo.hasCommonFriends()) {
-                friendsChain.add(idService.extractIdFromUserUrl(userInfo.getCommonFriendUrl()));
+                chainElement = new ChainElement(idService.extractIdFromUserUrl(userInfo.getCommonFriendUrl()), -1);
+                friendsChain.add(chainElement);
                 break;
             }
 
