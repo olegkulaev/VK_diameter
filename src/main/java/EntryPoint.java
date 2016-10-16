@@ -1,5 +1,7 @@
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import exceptions.LoopedFriendChainException;
+import exceptions.TooLongFriendsChain;
 import models.UserCredentials;
 import services.Crawler;
 import services.IdService;
@@ -9,7 +11,7 @@ import java.util.List;
 
 public class EntryPoint {
 
-    public static void main(String[] args) throws ClientException, ApiException, InterruptedException {
+    public static void main(String[] args) throws ClientException, ApiException, InterruptedException, LoopedFriendChainException, TooLongFriendsChain {
         UserCredentials userCredentials = UserCredentials.getDefault();
         IdService idService = new IdService();
         Crawler crawler = new Crawler(userCredentials.getLogin(), userCredentials.getPassword());
@@ -17,7 +19,7 @@ public class EntryPoint {
 
         String from = "id12941656";
         Integer to = userCredentials.getId();
-        List<String> friendsChain = explorerService.getFriendsChain(from, to);
+        List<String> friendsChain = explorerService.getFriendsChain(from);
         for (String friendUrl :
                 friendsChain) {
             System.out.println(friendUrl);
